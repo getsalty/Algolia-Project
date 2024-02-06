@@ -5,6 +5,7 @@ import Select from '../ui/Select';
 
 export function LoggedIn() {
   const { data: session } = useSession();
+
   const { data: allIndices } = trpc.allIndices.useQuery(undefined, {
     enabled: !!session,
   });

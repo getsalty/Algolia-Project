@@ -1,10 +1,10 @@
 import * as trpcNext from '@trpc/server/adapters/next';
 import { z } from 'zod';
-// import { prisma } from '~/utils/prisma';
-import { getSession } from 'next-auth/react';
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import { getUserInfo } from '~/services/users';
 import { getAllIndices, getAllRules } from '~/services/algolia';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
 
 export const t = initTRPC.create();
 
@@ -12,15 +12,10 @@ const { procedure, router } = t;
 
 export const appRouter = router({
   userInfo: procedure.query(async ({ ctx }) => {
-    const { session } = ctx as Context;
-    const userId = session?.user?.id;
-
-    if (!userId) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You must be logged in to see user information',
-      });
-    }
+    const userId = verifySession(
+      ctx,
+      'You must be logged in to see user information',
+    );
 
     const user = await getUserInfo(userId);
 
@@ -36,15 +31,7 @@ export const appRouter = router({
   }),
 
   allIndices: procedure.query(async ({ ctx }) => {
-    const { session } = ctx as Context;
-    const userId = session?.user?.id;
-
-    if (!userId) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You must be logged in to see indices',
-      });
-    }
+    verifySession(ctx, 'You must be logged in to see indices');
 
     const indices = await getAllIndices();
 
@@ -62,15 +49,10 @@ export const appRouter = router({
   allRulesForIndexName: procedure
     .input(z.string())
     .query(async ({ input, ctx }) => {
-      const { session } = ctx as Context;
-      const userId = session?.user?.id;
-
-      if (!userId) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to see indices',
-        });
-      }
+      verifySession(
+        ctx,
+        `You must be logged in to see the rules for the index ${input}`,
+      );
 
       const indices = await getAllRules(input);
 
@@ -86,6 +68,27 @@ export const appRouter = router({
     }),
 });
 
+/**
+ * Verifies the session is valid and returns the userId.
+ * @param ctx The context of the current request
+ * @param errorMessage The desired error message
+ * @throws TRPCError
+ * @returns userId
+ */
+function verifySession(ctx: unknown, errorMessage: string) {
+  const { session } = ctx as Context;
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: errorMessage,
+    });
+  }
+
+  return userId;
+}
+
 // export type definition of API
 export type AppRouter = typeof appRouter;
 
@@ -97,8 +100,9 @@ export default trpcNext.createNextApiHandler({
 
 export async function createContext({
   req,
+  res,
 }: trpcNext.CreateNextContextOptions) {
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   return { session };
 }
 
