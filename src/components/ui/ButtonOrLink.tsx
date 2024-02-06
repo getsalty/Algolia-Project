@@ -20,7 +20,7 @@ export interface Props extends ButtonOrLinkProps {
 export function ButtonOrLink({ href, preserveRedirect, ...props }: Props) {
   const router = useRouter();
   const isLink = typeof href !== 'undefined';
-  const ButtonOrLink = isLink ? 'a' : 'button';
+  const ButtonOrLink = isLink ? 'span' : 'button';
 
   let content = <ButtonOrLink {...props} />;
 
