@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply basic global styles to the body: */
+body {
+  @apply bg-gray-100 font-sans text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
+  overflow: hidden;
+}
+
+@layer components {
+  .card-shadow {
+    -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  }
+  .description-transition {
+    transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  }
+  /* ... */
+}
+
+/* Remove trailing margin from forms for some browsers: */
+form {
+  margin-block-end: 0;
+}
+
+/* NOTE: Webkit autofill can be very annoying, and leave the auto-filled content invisible to the user. */
+/* We try to avoid this by setting this to a sane default, which seems to work based on some experimentation. */
+input:-webkit-autofill {
+  -webkit-text-fill-color: theme('colors.gray.800') !important;
+}
+
+/* This correctly styles the minimal progress bar that is displayed when navigating between pages */
+#nprogress {
+  @apply pointer-events-none z-50;
+}
+#nprogress .bar {
+  @apply fixed top-0 left-0 z-50 h-0.5 w-full bg-gray-500;
+}
+
+@font-face {
+  font-family: 'Lobster';
+  /* src: url(/font/Lobster-Regular.ttf) format('truetype'); */
+  src: url('/font/lobster-regular-webfont.woff2') format('woff2'),
+    url('/font/lobster-regular-webfont.woff') format('woff');
+}
