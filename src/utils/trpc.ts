@@ -1,9 +1,10 @@
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
+import { ssrPrepass } from '@trpc/next/ssrPrepass';
 import type { AppRouter } from '../pages/api/trpc/[trpc]';
 
 export const trpc = createTRPCNext<AppRouter>({
-  config({ ctx }) {
+  config() {
     const url =
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000/api/trpc'
@@ -22,4 +23,5 @@ export const trpc = createTRPCNext<AppRouter>({
     };
   },
   ssr: true,
+  ssrPrepass,
 });
