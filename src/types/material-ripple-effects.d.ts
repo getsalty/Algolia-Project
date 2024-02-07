@@ -6,10 +6,7 @@ declare module 'material-ripple-effects' {
   }
 
   class Ripple implements Ripple {
-    create(
-      event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-      color: 'dark' | 'light',
-    ): void;
+    create(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, color: 'dark' | 'light'): void;
   }
 
   export = Ripple;

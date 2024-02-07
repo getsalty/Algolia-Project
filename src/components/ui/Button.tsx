@@ -9,22 +9,10 @@ type Props = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   variant?: 'filled' | 'outlined' | 'gradient' | 'text';
   endIcon?: ReactNode;
-} & React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->;
+} & React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
 const Button = (props: Props) => {
-  const {
-    ripple = true,
-    className,
-    children,
-    ref,
-    onClick,
-    variant = 'filled',
-    endIcon,
-    ...rest
-  } = props;
+  const { ripple = true, className, children, ref, onClick, variant = 'filled', endIcon, ...rest } = props;
 
   const rippleEffect = new Ripple();
 
@@ -36,10 +24,7 @@ const Button = (props: Props) => {
       type="button"
       onClick={(e) => {
         if (ripple) {
-          rippleEffect.create(
-            e,
-            variant === 'filled' || variant === 'gradient' ? 'light' : 'dark',
-          );
+          rippleEffect.create(e, variant === 'filled' || variant === 'gradient' ? 'light' : 'dark');
         }
 
         if (onClick) {

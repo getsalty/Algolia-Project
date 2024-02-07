@@ -27,9 +27,7 @@ export function ButtonOrLink({ href, preserveRedirect, ...props }: Props) {
   if (isLink) {
     const finalHref =
       preserveRedirect && router.query.redirect
-        ? `${href!}?redirect=${encodeURIComponent(
-            router.query.redirect as string,
-          )}`
+        ? `${href!}?redirect=${encodeURIComponent(router.query.redirect as string)}`
         : href!;
 
     return <Link href={finalHref}>{content}</Link>;

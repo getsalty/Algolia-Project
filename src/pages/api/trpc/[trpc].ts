@@ -12,20 +12,10 @@ const { procedure, router } = t;
 
 export const appRouter = router({
   userInfo: procedure.query(async ({ ctx }) => {
-    const userId = verifySession(
-      ctx,
-      'You must be logged in to see user information',
-    );
+    const userId = verifySession(ctx, 'You must be logged in to see user information');
 
     const user = await getUserInfo(userId);
-
-    if (user instanceof Error) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: user.message,
-        cause: user,
-      });
-    }
+    validateServiceResult(user);
 
     return user;
   }),
@@ -34,39 +24,35 @@ export const appRouter = router({
     verifySession(ctx, 'You must be logged in to see indices');
 
     const indices = await getAllIndices();
-
-    if (indices instanceof Error) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: indices.message,
-        cause: indices,
-      });
-    }
+    validateServiceResult(indices);
 
     return indices;
   }),
 
-  allRulesForIndexName: procedure
-    .input(z.string())
-    .query(async ({ input, ctx }) => {
-      verifySession(
-        ctx,
-        `You must be logged in to see the rules for the index ${input}`,
-      );
+  allRulesForIndexName: procedure.input(z.string()).query(async ({ input, ctx }) => {
+    verifySession(ctx, `You must be logged in to see the rules for the index ${input}`);
 
-      const indices = await getAllRules(input);
+    const rules = await getAllRules(input);
+    validateServiceResult(rules);
 
-      if (indices instanceof Error) {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: indices.message,
-          cause: indices,
-        });
-      }
-
-      return indices;
-    }),
+    return rules;
+  }),
 });
+
+/**
+ * Validates the result from the service and asserts the result is a valid datatype.
+ * @param result  The result from the service call
+ * @throws TRPCError
+ */
+function validateServiceResult<T>(result: T | Error): asserts result is T {
+  if (result instanceof Error) {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: result.message,
+      cause: result,
+    });
+  }
+}
 
 /**
  * Verifies the session is valid and returns the userId.
@@ -98,10 +84,7 @@ export default trpcNext.createNextApiHandler({
   createContext,
 });
 
-export async function createContext({
-  req,
-  res,
-}: trpcNext.CreateNextContextOptions) {
+export async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
   const session = await getServerSession(req, res, authOptions);
   return { session };
 }

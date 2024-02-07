@@ -30,9 +30,7 @@ const UserBadge = (props: Props) => {
 
   return (
     <div className="mx-1 inline-flex h-9 w-9 select-none items-center justify-center rounded-full bg-contain">
-      <span className="text-xl font-bold text-gray-800">
-        {singleLetter.toUpperCase()}
-      </span>
+      <span className="text-xl font-bold text-gray-800">{singleLetter.toUpperCase()}</span>
     </div>
   );
 };

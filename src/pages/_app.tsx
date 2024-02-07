@@ -4,6 +4,7 @@ import { NProgress } from '~/components/App/NProgress';
 import { SessionProvider } from 'next-auth/react';
 import '../styles.css';
 import './App.css';
+import '../test.css';
 import { App } from '~/components/App';
 import Head from 'next/head';
 import { trpc } from '~/utils/trpc';

@@ -2,6 +2,7 @@ import { trpc } from '~/utils/trpc';
 import Button from '../ui/Button';
 import { signOut, useSession } from 'next-auth/react';
 import Select from '../ui/Select';
+import { useMemo } from 'react';
 
 export function LoggedIn() {
   const { data: session } = useSession();
@@ -15,6 +16,16 @@ export function LoggedIn() {
     enabled: !!allIndices,
   });
 
+  const indexOptions = useMemo(
+    () => allIndices?.map((index) => ({ name: index.name, value: index.name })) ?? [],
+    [allIndices],
+  );
+
+  // const ruleOptions = useMemo(
+  //   () => allRules?.map((index) => ({ name: index., value: index.name })) ?? [],
+  //   [allRules],
+  // );
+
   return (
     <>
       <h3 className="text-center text-xl font-bold">
@@ -27,7 +38,9 @@ export function LoggedIn() {
       <br />
       {allRules && <p>{JSON.stringify(allRules)}</p>}
       <br /> <br />
-      <Select placeholder="Select Source Index" />
+      <Select placeholder="Select Source Index" options={indexOptions} data-testid="select-source-index" />
+      <Select placeholder="Select Source Index" options={indexOptions} data-testid="select-source-index" />
+      <Select placeholder="Select Destination Index" options={indexOptions} data-testid="select-destination-index" />
     </>
   );
 }
