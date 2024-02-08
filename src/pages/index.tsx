@@ -5,6 +5,10 @@ import { LoggedIn } from '~/components/Landing/LoggedIn';
 const Landing = () => {
   const { data: session } = useSession();
 
-  return !!session ? <LoggedIn /> : <LoggedOut />;
+  return (
+    <div className="text-gray-900">
+      !!session ? <LoggedIn /> : <LoggedOut />
+    </div>
+  );
 };
 export default Landing;
