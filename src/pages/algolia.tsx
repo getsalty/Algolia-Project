@@ -57,7 +57,7 @@ export default function Page() {
   };
 
   return (
-    <>
+    <div className="text-gray-900">
       {currentIndex && <div>Current Index: {currentIndex}</div>}
       {currentRules && <div>Current Rules: {currentRules}</div>}
       {destinationIndex && <div>Destination Index: {destinationIndex}</div>}
@@ -89,6 +89,6 @@ export default function Page() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
