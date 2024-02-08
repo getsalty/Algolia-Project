@@ -1,4 +1,4 @@
-import algoliasearch, { Index, Rule } from 'algoliasearch';
+import algoliasearch, { Hit, Index, Rule } from 'algoliasearch';
 
 export const client = algoliasearch(process.env.ALGOLIA_APP_ID ?? '', process.env.ALGOLIA_API_KEY ?? '');
 
@@ -11,7 +11,7 @@ export const getAllIndices = async (): Promise<Index[] | Error> => {
   }
 };
 
-export const getAllRules = async (indexName: string): Promise<Rule[] | Error> => {
+export const getAllRules = async (indexName: string): Promise<Hit<Rule>[] | Error> => {
   try {
     const searchIndex = client.initIndex(indexName);
     const searchRules = await searchIndex.searchRules('');

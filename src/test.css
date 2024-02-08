@@ -1032,3 +1032,23 @@
     font-size: 1rem;
   }
 }
+.stl-checkbox {
+  align-items: center;
+  background: linear-gradient(180deg, #fff, #f5f5fa);
+  border: 1px solid #777aaf;
+  border-top-color: rgb(119, 122, 175);
+  border-right-color: rgb(119, 122, 175);
+  border-bottom-color: rgb(119, 122, 175);
+  border-left-color: rgb(119, 122, 175);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 0 rgba(35, 38, 59, 0.05);
+  color: #003dff;
+  display: flex;
+  flex-shrink: 0;
+  height: 16px;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  width: 16px;
+}

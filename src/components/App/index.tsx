@@ -16,7 +16,7 @@ export function App(props: any) {
       <HeaderBar />
 
       <ContentContainer>
-        <span>{matches ? 'Big' : 'Small'}</span>
+        {/* <span>{matches ? 'Big' : 'Small'}</span> */}
         {props.children}
       </ContentContainer>
     </>

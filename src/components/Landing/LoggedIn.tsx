@@ -38,9 +38,9 @@ export function LoggedIn() {
       <br />
       {allRules && <p>{JSON.stringify(allRules)}</p>}
       <br /> <br />
+      {/* <Select placeholder="Select Source Index" options={indexOptions} data-testid="select-source-index" />
       <Select placeholder="Select Source Index" options={indexOptions} data-testid="select-source-index" />
-      <Select placeholder="Select Source Index" options={indexOptions} data-testid="select-source-index" />
-      <Select placeholder="Select Destination Index" options={indexOptions} data-testid="select-destination-index" />
+      <Select placeholder="Select Destination Index" options={indexOptions} data-testid="select-destination-index" /> */}
     </>
   );
 }

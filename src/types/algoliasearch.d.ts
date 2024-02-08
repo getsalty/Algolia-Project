@@ -257,6 +257,14 @@ declare module 'algoliasearch' {
     renderingContent?: Settings['renderingContent'];
   };
 
+  export declare type Hit<THit> = THit & {
+    readonly objectID: string;
+    readonly _highlightResult?: HighlightResult<THit>;
+    readonly _snippetResult?: SnippetResult<THit>;
+    readonly _rankingInfo?: RankingInfo;
+    readonly _distinctSeqID?: number;
+  };
+
   export declare type Rule = {
     /**
      * Unique identifier for the rule (format: [A-Za-z0-9_-]+).
@@ -289,7 +297,104 @@ declare module 'algoliasearch' {
      * The list must not be empty.
      */
     readonly validity?: readonly TimeRange[];
+
+    readonly _metadata?: {
+      lastUpdate: number;
+    };
   };
 
+  export declare type Consequence = {
+    /**
+     * Additional search parameters. Any valid search parameter is allowed.
+     */
+    readonly params?: ConsequenceParams & Pick<SearchOptions, Exclude<keyof SearchOptions, 'query'>>;
+    /**
+     * Objects to promote as hits.
+     */
+    readonly promote?: readonly ConsequencePromote[];
+    /**
+     * Objects to hide from hits.
+     */
+    readonly hide?: ReadonlyArray<{
+      readonly objectID: string;
+    }>;
+    /**
+     * Whether the Query Rule should promote or not promoted items.
+     */
+    readonly filterPromotes?: boolean;
+    /**
+     * Custom JSON object that will be appended to the userData array in the response.
+     * This object is not interpreted by the API. It is limited to 1kB of minified JSON.
+     */
+    readonly userData?: any;
+  };
+
+  export declare type ConsequenceParams = {
+    /**
+     * When providing a string, it replaces the entire query string.
+     * When providing an object, it describes incremental edits to be made to the query string (but you can’t do both).
+     */
+    readonly query?: ConsequenceQuery | string;
+    /**
+     * Names of facets to which automatic filtering must be applied; they must match the facet name of a facet value placeholder in the query pattern.
+     */
+    readonly automaticFacetFilters?: readonly AutomaticFacetFilter[] | readonly string[];
+    /**
+     * Same syntax as automaticFacetFilters, but the engine treats the filters as optional.
+     * Behaves like optionalFilters.
+     */
+    readonly automaticOptionalFacetFilters?: readonly AutomaticFacetFilter[] | readonly string[];
+    /**
+     * Content defining how the search interface should be rendered.
+     * A default value for this can be set via settings
+     */
+    readonly renderingContent?: Settings['renderingContent'];
+  };
+
+  export declare type ConsequencePromote =
+    | {
+        /**
+         * Unique identifier of the object to promote.
+         */
+        readonly objectID: string;
+        /**
+         * Promoted rank for the object (zero-based).
+         */
+        readonly position: number;
+      }
+    | {
+        /**
+         * List of unique identifiers for the objects to promote.
+         */
+        readonly objectIDs: readonly string[];
+        /**
+         * Promoted start rank for the objects (zero-based).
+         */
+        readonly position: number;
+      };
+
+  export declare type ConsequenceQuery = {
+    /**
+     * List of removes.
+     */
+    readonly remove?: readonly string[];
+    /**
+     * List of edits.
+     */
+    readonly edits?: ReadonlyArray<{
+      /**
+       * Type of edit.
+       */
+      readonly type?: 'remove' | 'replace';
+      /**
+       * Text or patterns to remove from the query string.
+       */
+      readonly delete?: string;
+      /**
+       * Text that should be inserted in place of the removed text inside the query string.
+       */
+      readonly insert?: string;
+    }>;
+  };
   export default algolia;
 }
