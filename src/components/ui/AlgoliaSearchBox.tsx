@@ -14,7 +14,7 @@ const AlgoliaSearchBox = (props: Props) => {
   }, [inputDebounce, onChange]);
 
   return (
-    <div className="ais-SearchBox">
+    <div className="ais-SearchBox w-full">
       <form action="" className="ais-SearchBox-form" role="search">
         <input
           className="ais-SearchBox-input"

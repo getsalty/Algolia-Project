@@ -18,6 +18,10 @@ import AlgoliaSearchBox from '~/components/ui/AlgoliaSearchBox';
 import AlgoliaRuleTable from '~/components/ui/AlgoliaRuleTable';
 import { trpc } from '~/utils/trpc';
 import AlgoliaIndicesTable from '~/components/ui/AlgoliaIndicesTable';
+import IndexCard from '~/components/ui/IndexCard';
+import IndexCardContainer from '~/components/ui/IndexCardContainer';
+import RightArrow from '~/components/ui/RightArrow';
+import IndexSearchTable from '~/components/ui/SearchTable';
 
 const client = algoliasearch('latency', '6be0576ff61c053d5f9a3225e2a90f76');
 
@@ -28,8 +32,6 @@ export default function Page() {
     enabled: !!session,
   });
 
-  const [filteredValue, setFilteredValue] = useState('');
-
   const [currentIndex, setCurrentIndex] = useState<string | null>(null);
   const [currentRules, setCurrentRules] = useState<string[] | null>(null);
   const [destinationIndex, setDestinationIndex] = useState<string | null>(null);
@@ -38,12 +40,7 @@ export default function Page() {
     enabled: !!allIndices && !!currentIndex,
   });
 
-  const onChange = (value: string) => {
-    setFilteredValue(value);
-  };
-
   const onSourceIndexSelection = (value: string) => {
-    setFilteredValue('');
     setCurrentIndex(value);
   };
 
@@ -52,26 +49,32 @@ export default function Page() {
   };
 
   const onDestinationIndexSelection = (value: string) => {
-    setFilteredValue('');
     setDestinationIndex(value);
   };
 
   return (
     <div className="text-gray-900">
-      {currentIndex && <div>Current Index: {currentIndex}</div>}
-      {currentRules && <div>Current Rules: {currentRules}</div>}
-      {destinationIndex && <div>Destination Index: {destinationIndex}</div>}
+      <div className="mb-4 flex gap-2 align-middle items-center justify-center">
+        <IndexCardContainer header="Source Index" currentStep={!currentIndex}>
+          {currentIndex && <IndexCard caption={currentIndex} />}
+        </IndexCardContainer>
+        <RightArrow />
+        <IndexCardContainer header="Rules" currentStep={!!currentIndex && !currentRules}>
+          {currentRules && <IndexCard caption={currentRules.length.toString()} />}
+        </IndexCardContainer>
+        <RightArrow />
+        <IndexCardContainer
+          header="Destination Index"
+          currentStep={!!currentIndex && !!currentRules && !destinationIndex}
+        >
+          {destinationIndex && <IndexCard caption={destinationIndex} />}
+        </IndexCardContainer>
+      </div>
 
       <div className="p-0 bg-white rounded-[3px] overflow-hidden shadow-[0_0_0_1px_rgba(35,38,59,.05),0_1px_3px_0_rgba(35,38,59,.15)] flex flex-col">
         <div className="grid gap-2">
           {!currentIndex && (
-            <>
-              <AlgoliaSearchBox onChange={onChange} />
-              <AlgoliaIndicesTable
-                data={allIndices?.filter((o) => o.name.includes(filteredValue)) ?? []}
-                onClick={onSourceIndexSelection}
-              />
-            </>
+            <IndexSearchTable title="Select A Source Index" onSelectionChanged={onSourceIndexSelection} />
           )}
 
           {currentIndex && !currentRules && (
@@ -79,13 +82,11 @@ export default function Page() {
           )}
 
           {currentIndex && currentRules && !destinationIndex && (
-            <>
-              <AlgoliaSearchBox onChange={onChange} />
-              <AlgoliaIndicesTable
-                data={allIndices?.filter((o) => o.name.includes(filteredValue) && o.name !== currentIndex) ?? []}
-                onClick={onDestinationIndexSelection}
-              />
-            </>
+            <IndexSearchTable
+              title="Select A Destination Index"
+              onSelectionChanged={onDestinationIndexSelection}
+              invalidValues={[currentIndex]}
+            />
           )}
         </div>
       </div>
