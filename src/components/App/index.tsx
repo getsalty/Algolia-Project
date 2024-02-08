@@ -12,14 +12,14 @@ export function App(props: any) {
 
   return (
     // <ThemeProvider>
-    <>
-      <HeaderBar />
+    <div className="w-full">
+      {/* <HeaderBar /> */}
 
       <ContentContainer>
         {/* <span>{matches ? 'Big' : 'Small'}</span> */}
         {props.children}
       </ContentContainer>
-    </>
+    </div>
     // </ThemeProvider>
   );
 }

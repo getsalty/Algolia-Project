@@ -18,7 +18,7 @@ const AlgoliaIndicesTable = (props: Props) => {
   }
 
   return (
-    <div className="overflow-x-auto whitespace-nowrap bg-white text-left  min-w-[1000px] w-full">
+    <div className="overflow-x-auto whitespace-nowrap bg-white text-left  min-w-[1000px] sm:min-w-[600px] w-full">
       <table role="table" className="border-none w-full">
         <thead className="bg-gray-50 border-t border-b border-gray-200 font-normal select-none text-sm">
           <tr>

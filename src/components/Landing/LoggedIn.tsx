@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import { signOut, useSession } from 'next-auth/react';
 import Select from '../ui/Select';
 import { useMemo } from 'react';
+import { Link } from '../ui/Link';
 
 export function LoggedIn() {
   const { data: session } = useSession();
@@ -28,6 +29,14 @@ export function LoggedIn() {
 
   return (
     <>
+      <div className="text-center text-xl font-bold flex grow items-center flex-col mb-8">
+        <Link
+          className="bg-green-200 border border-black rounded px-4 text-center align-middle shadow-xl"
+          href="algolia"
+        >
+          Go To Algolia Page
+        </Link>
+      </div>
       <h3 className="text-center text-xl font-bold">
         Welcome, {session?.user?.name}!<p>{session?.user?.email}</p>
       </h3>

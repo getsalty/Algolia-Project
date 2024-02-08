@@ -26,7 +26,7 @@ const AlgoliaRuleTable = (props: Props) => {
   }
 
   return (
-    <div className="overflow-x-auto whitespace-nowrap bg-white min-w-[1000px] w-full">
+    <div className="overflow-x-auto whitespace-nowrap bg-white min-w-[1000px] sm:min-w-[600px] w-full">
       <div className="my-4 flex flex-row align-middle">
         <div className="inline-flex align-middle grow items-center">
           <span className="ml-4 font-bold h-fit">Select Roles To Transfer</span>
