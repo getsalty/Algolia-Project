@@ -1,4 +1,4 @@
-import { ButtonOrLink, Props as ButtonOrLinkProps } from './ButtonOrLink';
+import { ButtonOrLink, Props as ButtonOrLinkProps } from '../ui/ButtonOrLink';
 
 export interface Props extends ButtonOrLinkProps {}
 

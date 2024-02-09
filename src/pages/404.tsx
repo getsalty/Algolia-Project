@@ -1,5 +1,5 @@
-import { Container } from '~/components/ui/Container';
-import { Link } from '~/components/ui/Link';
+import { Container } from '~/components/404/Container';
+import { Link } from '~/components/404/Link';
 
 export default function Custom404() {
   return (

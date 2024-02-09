@@ -2,7 +2,7 @@ import * as trpcNext from '@trpc/server/adapters/next';
 import { z } from 'zod';
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import { getUserInfo } from '~/services/users';
-import { getAllIndices, getAllRules } from '~/services/algolia';
+import { copyRulesFromSourceToDestination, getAllIndices, getAllRules } from '~/services/algolia';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 
@@ -37,6 +37,27 @@ export const appRouter = router({
 
     return rules;
   }),
+
+  addRulesToIndex: procedure
+    .input(
+      z.object({
+        sourceIndexName: z.string(),
+        destinationIndexName: z.string(),
+        ruleObjectIDs: z.array(z.string()),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      verifySession(ctx, `You must be logged in to see the rules for the index ${input}`);
+
+      const rules = await copyRulesFromSourceToDestination(
+        input.sourceIndexName,
+        input.destinationIndexName,
+        input.ruleObjectIDs,
+      );
+      validateServiceResult(rules);
+
+      return rules;
+    }),
 });
 
 /**
@@ -45,13 +66,30 @@ export const appRouter = router({
  * @throws TRPCError
  */
 function validateServiceResult<T>(result: T | Error): asserts result is T {
-  if (result instanceof Error) {
+  if (isError(result)) {
+    console.error(result);
+
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
       message: result.message,
       cause: result,
     });
   }
+}
+
+function isError(value: unknown): value is Error {
+  if (value instanceof Error) {
+    return true;
+  }
+
+  return (
+    value != null &&
+    value instanceof Object &&
+    'name' in value &&
+    'message' in value &&
+    typeof value.name === 'string' &&
+    typeof value.message === 'string'
+  );
 }
 
 /**

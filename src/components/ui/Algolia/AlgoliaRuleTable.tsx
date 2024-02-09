@@ -6,10 +6,15 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(advancedFormat);
 dayjs.extend(utc);
 
-type Props = { canSelectAll: boolean; data: Rule[]; onSelection: (ruleObjectIds: string[]) => void };
+type Props = {
+  canSelectAll: boolean;
+  data: Rule[];
+  onSelection: (ruleObjectIds: string[]) => void;
+  onBackClick: () => void;
+};
 
 const AlgoliaRuleTable = (props: Props) => {
-  const { canSelectAll, data, onSelection } = props;
+  const { canSelectAll, data, onSelection, onBackClick } = props;
 
   const [checkedRules, setCheckedRules] = useState<string[]>([]);
 
@@ -27,9 +32,17 @@ const AlgoliaRuleTable = (props: Props) => {
 
   return (
     <div className="overflow-x-auto whitespace-nowrap bg-white min-w-[1000px] sm:min-w-[600px] w-full">
-      <div className="my-4 flex flex-row align-middle">
-        <div className="inline-flex align-middle grow items-center">
-          <span className="ml-4 font-bold h-fit">Select Roles To Transfer</span>
+      <div className="my-4 flex flex-row align-middle select-none">
+        <button
+          title="Go Back"
+          type="button"
+          onClick={onBackClick}
+          className="ml-4 inline-flex rounded-[3px] justify-center items-center px-3 text-sm font-normal typo-display-body h-8 bg-[linear-gradient(-180deg,#003dff,#022eb9)] border-[#022eb9] border-solid border-l shadow btn-primary cursor-pointer disabled:bg-[linear-gradient(-180deg,#d5d6d8,#bfbfc2)] disabled:border-[#bfbfc2] disabled:cursor-default"
+        >
+          <span className="whitespace-nowrap px-1 text-white">Back</span>
+        </button>
+        <div className="inline-flex align-middle grow items-center justify-center">
+          <span className="font-bold h-fit">Select Roles To Transfer</span>
         </div>
         <button
           title="Select at least one rule to transfer"
