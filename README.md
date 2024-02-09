@@ -23,9 +23,10 @@ This project is a workflow for copying rules from one index to another index.
 - `404`
   - Basic 404
 
-#### Auth
+#### Authentication
 
 - I chose to go with Github authentication, but locally I was testing with both Github and Twitter.
+- I used a PostgreSQL database with Prisma to store the user data. Locally, this database is spun up inside of a docker container. In the live demo, the database lives in [Railway](https://railway.app/).
 
 #### CSS
 
