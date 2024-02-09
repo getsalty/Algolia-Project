@@ -13,7 +13,7 @@ This project is a workflow for copying rules from one index to another index.
 - [Live Demo](https://algolia-project.vercel.app/)
 - [Github](https://github.com/getsalty/Algolia-Project)
 
-## Architecture / Descision Making
+## Architecture / Decision Making
 
 #### Pages
 
