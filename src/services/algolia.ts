@@ -35,9 +35,8 @@ export const copyRulesFromSourceToDestination = async (
       .map(({ _highlightResult, _snippetResult, _rankingInfo, _distinctSeqID, ...rest }) => rest);
 
     const destinationIndex = client.initIndex(destinationIndexName);
-    const a = await destinationIndex.saveRules(migratingRules);
+    await destinationIndex.saveRules(migratingRules);
   } catch (error) {
-    Object.prototype.toString.call(error);
     return error as Error;
   }
 };

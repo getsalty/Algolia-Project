@@ -1,7 +1,6 @@
 import * as trpcNext from '@trpc/server/adapters/next';
 import { z } from 'zod';
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
-import { getUserInfo } from '~/services/users';
 import { copyRulesFromSourceToDestination, getAllIndices, getAllRules } from '~/services/algolia';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
@@ -11,15 +10,6 @@ export const t = initTRPC.create();
 const { procedure, router } = t;
 
 export const appRouter = router({
-  userInfo: procedure.query(async ({ ctx }) => {
-    const userId = verifySession(ctx, 'You must be logged in to see user information');
-
-    const user = await getUserInfo(userId);
-    validateServiceResult(user);
-
-    return user;
-  }),
-
   allIndices: procedure.query(async ({ ctx }) => {
     verifySession(ctx, 'You must be logged in to see indices');
 

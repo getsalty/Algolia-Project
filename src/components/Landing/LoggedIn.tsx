@@ -1,6 +1,6 @@
 import { signOut } from 'next-auth/react';
 import Button from '../ui/Button';
-import Algolia from './algolia';
+import Algolia from './Algolia';
 
 export function LoggedIn() {
   return (

@@ -1,3 +1,7 @@
+body {
+  background-color: #e5fafc;
+}
+
 .dashed-border {
   background: linear-gradient(90deg, rgba(0, 0, 255, 0.5) 50%, transparent 50%),
     linear-gradient(90deg, rgba(0, 0, 255, 0.5) 50%, transparent 50%),
