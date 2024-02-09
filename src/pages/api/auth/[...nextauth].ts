@@ -26,11 +26,11 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_CLIENT_ID || '',
       clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
     }),
-    TwitterProvider({
-      clientId: process.env.TWITTER_ID || '',
-      clientSecret: process.env.TWITTER_SECRET || '',
-      version: '2.0',
-    }),
+    // TwitterProvider({
+    //   clientId: process.env.TWITTER_ID || '',
+    //   clientSecret: process.env.TWITTER_SECRET || '',
+    //   version: '2.0',
+    // }),
     // GoogleProvider({
     //   clientId: process.env.GOOGLE_CLIENT_ID || '',
     //   clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
@@ -41,15 +41,10 @@ export const authOptions: NextAuthOptions = {
     colorScheme: 'light',
   },
   session: {
-    // strategy: 'jwt',
     maxAge: THIRTY_DAYS,
     updateAge: THIRTY_MINUTES,
   },
   callbacks: {
-    // async jwt({ token }) {
-    //   token.userRole = 'admin';
-    //   return token;
-    // },
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
